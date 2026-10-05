@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Si hay selección, copiar
+if kitty @ get-text --match recent:0 --extent=selection 2>/dev/null | grep -q .; then
+    kitty @ get-text --match recent:0 --extent=selection | xclip -selection clipboard
+else
+    # Si no hay selección, pegar
+    kitty @ send-text --match recent:0 "$(xclip -selection clipboard -o 2>/dev/null)"
+fi

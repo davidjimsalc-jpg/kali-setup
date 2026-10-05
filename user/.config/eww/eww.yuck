@@ -1,0 +1,121 @@
+(defvar selected 0)
+(defvar wallpapers "")
+
+(defwindow wallpaper-picker
+  :monitor 0
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :width "1780px"
+    :height "400px"
+    :anchor "center"
+  )
+
+  :stacking "fg"
+  :windowtype "dock"
+  :wm-ignore false
+  :unfocus-close false
+
+  (box
+    :class "picker"
+    :halign "fill"
+    :valign "center"
+
+    (literal :content wallpapers)
+  )
+)
+
+(defpoll media :interval "1s"
+  `~/.config/eww/scripts/media-info.sh`)
+
+(defwindow media-panel
+  :monitor 0
+
+  :geometry (geometry
+    :x "0px"
+    :y "60px"
+    :width "430px"
+    :height "230px"
+    :anchor "top center"
+  )
+
+  :stacking "fg"
+  :windowtype "dialog"
+  :wm-ignore false
+  :unfocus-close false
+
+  (box
+    :class "media-panel"
+    :orientation "vertical"
+    :spacing 12
+
+    (box
+      :orientation "horizontal"
+      :spacing 16
+
+      (image
+        :class "media-cover"
+        :path {media.cover}
+        :image-width 120
+        :image-height 120
+        :preserve-aspect-ratio true
+      )
+
+      (box
+        :orientation "vertical"
+        :valign "center"
+        :spacing 8
+
+        (label
+          :class "media-title"
+          :text {media.title}
+          :limit-width 28
+          :show-truncated true
+        )
+
+        (label
+          :class "media-artist"
+          :text {media.artist}
+        )
+
+        (box
+          :class "media-controls"
+          :orientation "horizontal"
+          :spacing 18
+
+          (button
+            :onclick "playerctl -p spotify previous"
+            ""
+          )
+
+          (button
+            :onclick "playerctl -p spotify play-pause"
+            {media.status == "Playing" ? "" : ""}
+          )
+
+          (button
+            :onclick "playerctl -p spotify next"
+            ""
+          )
+        )
+      )
+    )
+
+(scale
+  :class "media-progress"
+  :min 0
+  :max 100
+  :value {media.progress}
+  :active false
+)
+
+(centerbox
+  :class "media-times"
+
+  (label :text {media.position})
+  (box)
+  (label :text {media.length})
+
+    )
+  )
+)

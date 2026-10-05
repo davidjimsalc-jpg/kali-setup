@@ -1,0 +1,144 @@
+* {
+    all: unset;
+}
+
+window {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.picker {
+    background: rgba(0, 0, 0, 0);
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
+
+.wall-carousel {
+    padding: 0;
+}
+
+.wall-side {
+    padding: 0;
+    margin: 0;
+}
+
+
+.wall-item {
+    padding: 0;
+    margin: 0;
+    border-radius: 14px;
+}
+
+.wall-item.far-left {
+    margin-right: -72px;
+}
+
+.wall-item.near-left {
+    margin-right: -2px;
+}
+
+.wall-item.near-right {
+    margin-left: -18px;
+}
+
+.wall-item.far-right {
+    margin-left: -72px;
+}
+
+.wall-item.near-right {
+    margin-left: -2px;
+    opacity: 0.82;
+}
+
+.wall-item.center {
+    margin: 0;
+    opacity: 1;
+}
+
+.wallpaper {
+    border-radius: 14px;
+}
+
+.wallpaper-frame {
+    border-radius: 14px;
+    background: transparent;
+}
+
+.carousel-shell {
+    padding: 0;
+    margin: 0;
+}
+
+.nav-arrow {
+    font-family: "Hack Nerd Font";
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0 8px;
+}
+
+.arrow-slot {
+    min-width: 120px;
+    padding: 0;
+    margin: 0;
+}
+
+.left-slot {
+    margin-left: -170px;
+    margin-right: 0;
+}
+
+.right-slot {
+    margin-right: -170px;
+    margin-left: 0;
+}
+
+
+
+.media-panel {
+    background: rgba(15, 18, 24, 0.92);
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.media-cover {
+    border-radius: 12px;
+}
+
+.media-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.media-artist {
+    font-size: 13px;
+    opacity: 0.75;
+}
+
+.media-controls button {
+    font-family: "Hack Nerd Font";
+    font-size: 20px;
+}
+
+.media-progress {
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+
+.media-progress trough {
+    min-height: 6px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+}
+
+.media-progress highlight {
+    border-radius: 8px;
+    background: rgba(255,255,255,0.8);
+}
+
+.media-times {
+    margin-top: -4px;
+    font-size: 11px;
+    opacity: 0.8;
+}

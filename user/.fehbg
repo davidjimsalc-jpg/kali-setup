@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --no-fehbg --bg-fill '$HOME/Conf_desktop/Wallpapers/ReinaMorada.jpg' 

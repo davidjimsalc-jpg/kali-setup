@@ -1,0 +1,63 @@
+#!/bin/bash
+
+STATE="$HOME/.cache/eww-wallpaper-index"
+
+# Cerrar cualquier picker anterior
+eww close-all 2>/dev/null
+
+# Arrancar daemon si no existe
+if ! pgrep -x eww >/dev/null; then
+    eww daemon --config "$HOME/.config/eww" >/dev/null 2>&1 &
+fi
+
+# Esperar a que Eww esté realmente listo
+for i in {1..30}; do
+    if eww active-windows >/dev/null 2>&1; then
+        break
+    fi
+    sleep 0.05
+done
+
+# Estado inicial
+WALLDIR="$HOME/Conf_desktop/Wallpapers"
+CURRENT_FILE="$HOME/.cache/current-wallpaper"
+
+mapfile -d '' WALLS < <(
+    find "$WALLDIR" -maxdepth 1 -type f \
+        \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) \
+        -print0 | sort -z
+)
+
+SELECTED=0
+
+if [ -f "$CURRENT_FILE" ]; then
+    CURRENT="$(cat "$CURRENT_FILE")"
+    CURRENT="$(realpath "$CURRENT" 2>/dev/null)"
+
+    for i in "${!WALLS[@]}"; do
+        WALL="$(realpath "${WALLS[$i]}" 2>/dev/null)"
+
+        if [ "$WALL" = "$CURRENT" ]; then
+            SELECTED="$i"
+            break
+        fi
+    done
+fi
+
+echo "$SELECTED" > "$STATE"
+
+CONTENT="$(
+    "$HOME/.config/eww/scripts/wallpapers.sh" "$SELECTED"
+)"
+
+# Actualizar antes de abrir
+eww update selected=0
+eww update "wallpapers=$CONTENT"
+
+# Abrir picker ya con contenido cargado
+eww open wallpaper-picker
+
+# Controles temporales
+pkill -x sxhkd
+sxhkd -c "$HOME/.config/sxhkd/sxhkd-wallpicker" >/dev/null 2>&1 &
+disown

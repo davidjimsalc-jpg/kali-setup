@@ -1,0 +1,14 @@
+Left
+    $HOME/.config/eww/scripts/wallpaper-nav.sh left
+
+Right
+    $HOME/.config/eww/scripts/wallpaper-nav.sh right
+
+Return
+    $HOME/.config/eww/scripts/wallpaper-nav.sh select
+
+Escape
+    $HOME/.config/eww/scripts/wallpaper-nav.sh close
+
+super + q
+    $HOME/.config/eww/scripts/wallpaper-nav.sh close

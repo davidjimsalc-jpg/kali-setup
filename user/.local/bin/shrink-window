@@ -1,0 +1,40 @@
+#!/bin/bash
+
+CACHE="$HOME/.cache/shrink-window"
+mkdir -p "$CACHE"
+
+FOCUSED_HEX=$(bspc query -N -n focused)
+[ -z "$FOCUSED_HEX" ] && exit 1
+
+# Convertir ID hexadecimal de bspwm a decimal
+FOCUSED=$((FOCUSED_HEX))
+
+STATE="$CACHE/$FOCUSED"
+
+PARENT_JSON=$(bspc query -T -n @parent)
+
+PARENT=$(echo "$PARENT_JSON" | jq -r '.id')
+FIRST=$(echo "$PARENT_JSON" | jq -r '.firstChild.id')
+OLD_RATIO=$(echo "$PARENT_JSON" | jq -r '.splitRatio')
+
+# Si ya estaba pequeña -> restaurar
+if [ -f "$STATE" ]; then
+    read -r SAVED_PARENT SAVED_RATIO < "$STATE"
+
+    bspc node "$SAVED_PARENT" -r "$SAVED_RATIO"
+
+    rm -f "$STATE"
+    exit 0
+fi
+
+# Guardar el tamaño anterior
+echo "$PARENT $OLD_RATIO" > "$STATE"
+
+# Encoger el lado donde está la ventana enfocada
+if [ "$FOCUSED" -eq "$FIRST" ]; then
+    # Primer hijo -> hacerlo pequeño
+    bspc node "$PARENT" -r 0.02
+else
+    # Segundo hijo -> hacerlo pequeño
+    bspc node "$PARENT" -r 0.98
+fi

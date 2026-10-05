@@ -1,0 +1,12 @@
+#!/bin/bash
+
+FOCUSED_ID=$(bspc query -T -n focused | jq -r '.id')
+FIRST_ID=$(bspc query -T -n @parent | jq -r '.firstChild.id')
+
+if [ "$FOCUSED_ID" = "$FIRST_ID" ]; then
+    # La ventana seleccionada es la primera del split
+    bspc node @parent -r 0.02
+else
+    # La ventana seleccionada es la segunda del split
+    bspc node @parent -r 0.98
+fi

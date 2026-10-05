@@ -1,0 +1,22 @@
+#!/bin/bash
+
+WALL="$(realpath "$1")"
+
+# Guardar el wallpaper actual
+echo "$WALL" > "$HOME/.cache/current-wallpaper"
+
+# Generar paleta
+wal -i "$WALL" -n
+
+# Aplicar fondo
+feh --bg-fill "$WALL"
+
+# Aplicar colores a Kitty
+kitty @ set-colors --all ~/.cache/wal/colors-kitty.conf 2>/dev/null
+
+# Actualizar Polybar
+update-polybar-colors
+~/.config/polybar/launch.sh
+
+# Refrescar el prompt
+kitty @ send-text --match all $'exec zsh\n'

@@ -1,0 +1,75 @@
+#!/bin/bash
+
+WAL="$HOME/.cache/wal/colors"
+OUT="$HOME/.config/polybar/colors.ini"
+
+if [ ! -f "$WAL" ]; then
+    echo "No existe $WAL"
+    exit 1
+fi
+
+mapfile -t C < "$WAL"
+
+if [ "${#C[@]}" -lt 16 ]; then
+    echo "La paleta de pywal no contiene 16 colores"
+    exit 1
+fi
+
+BASE="${C[0]}"
+
+# Wallpaper actualmente aplicado
+WALL="$(cat "$HOME/.cache/current-wallpaper" 2>/dev/null)"
+
+# Calcular luminosidad SOLO de la franja superior
+if [ -f "$WALL" ]; then
+    lum=$(
+        convert "$WALL" \
+            -gravity north \
+            -crop '100%x80+0+0' \
+            +repage \
+            -colorspace Gray \
+            -format '%[fx:round(mean*255)]' \
+            info:
+    )
+else
+    lum=128
+fi
+
+if [ "$lum" -lt 120 ]; then
+    ISLAND="#C0${C[15]#\#}"
+else
+    ISLAND="#70${C[0]#\#}"
+fi
+
+if [ "$lum" -lt 120 ]; then
+    FG="${C[15]}"
+else
+    FG="${C[0]}"
+fi
+
+cat > "$OUT" <<EOF
+[color]
+bg = #00000000
+fg = ${FG}
+
+black = ${C[0]}
+red = ${C[1]}
+green = ${C[2]}
+yellow = ${C[3]}
+blue = ${C[4]}
+magenta = ${C[5]}
+cyan = ${C[6]}
+white = ${C[7]}
+
+gray = ${C[8]}
+light-red = ${C[9]}
+light-green = ${C[10]}
+light-yellow = ${C[11]}
+light-blue = ${C[12]}
+light-magenta = ${C[13]}
+light-cyan = ${C[14]}
+bright-white = ${C[15]}
+
+island-bg = ${ISLAND}
+ac = ${C[4]}
+EOF
