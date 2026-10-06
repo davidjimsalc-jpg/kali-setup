@@ -89,6 +89,15 @@ Main shortcuts included in the setup:
 | `Super + Shift + X` | Lock screen with i3lock-fancy |
 | `Super + Alt + F` | Open wallpaper carousel / selector |
 
+## SSH
+
+If SSH does not behave as expected after connecting to a machine (for example, you cannot use Backspace properly or navigate through previous commands), use:
+
+```
+ssh256 USER@IP
+```
+
+This is an alias in the zshrc for environments that do not properly support xterm-kitty.
 
 ## Screenshots
 
