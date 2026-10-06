@@ -493,3 +493,5 @@ bindkey -M main '^H' backward-kill-word
 
 eval "$(fzf --zsh)"
 
+export PATH=$PATH:/home/nyxwing/.spicetify
+alias ssh256='TERM=xterm-256color ssh'
